@@ -1,0 +1,3 @@
+---
+# Install PostgreSQL from OS repository
+postgresql_package: "postgresql"

@@ -1,0 +1,24 @@
+---
+- name: Install PostgreSQL from OS repository | Install requirements packages
+  ansible.builtin.apt:
+    name: gpg-agent
+    state: present
+    update_cache: yes
+
+- name: Install PostgreSQL from OS repository | Create the file repository configuration
+  ansible.builtin.template:
+    src: "pgdg.list.j2"
+    dest: "/etc/apt/sources.list.d/pgdg.list"
+    owner: root
+    mode: '0644'
+
+- name: Install PostgreSQL from OS repository | Import the repository signing key
+  ansible.builtin.apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Install PostgreSQL from OS repository | Install PostgreSQL package.
+  ansible.builtin.apt:
+    name: "{{ postgresql_package }}"
+    state: present
+    update_cache: yes
