@@ -19,6 +19,6 @@
 
 - name: Install PostgreSQL from OS repository | Install PostgreSQL package.
   ansible.builtin.apt:
-    name: "{{ postgresql_package }}"
+    name: "postgresql-{{ postgresql_version }}"
     state: present
     update_cache: yes
