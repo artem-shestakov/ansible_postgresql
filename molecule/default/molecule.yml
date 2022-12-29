@@ -22,6 +22,6 @@ provisioner:
       interpreter_python: auto
 verifier:
   name: testinfra
-  oprions:
+  options:
     connection: docker
     v: 2
