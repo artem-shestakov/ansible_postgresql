@@ -3,7 +3,7 @@ name: CI
 'on':
   pull_request:
     branches:
-      - master
+      - develop
 
 jobs:
   # lint:
@@ -35,6 +35,7 @@ jobs:
           - geerlingguy/docker-ubuntu1604-ansible
           - geerlingguy/docker-ubuntu1804-ansible
           - geerlingguy/docker-ubuntu2004-ansible
+          - geerlingguy/docker-centos7-ansible
 
     steps:
       - name: Check out the codebase.

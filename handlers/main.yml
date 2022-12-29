@@ -1,7 +1,18 @@
 ---
-- name: HANDLER | Make sure thr POstgreSQL is running
+- name: HANDLER | Make sure thr PostgreSQL is running (Debian)
   ansible.builtin.systemd:
     state: started
     enabled: yes
     name: postgresql
+  when:
+    - ansible_os_family == 'Debian'
+  listen: "start postgresql"
+
+- name: HANDLER | Make sure thr PostgreSQL is running (RedHat)
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: "postgresql-{{ postgresql_version }}"
+  when:
+    - ansible_os_family == 'RedHat'
   listen: "start postgresql"

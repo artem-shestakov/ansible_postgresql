@@ -1,0 +1,56 @@
+- name: Install PostgreSQL from OS repository | Install the repository RPM
+  ansible.builtin.yum:
+    name: "{{ postgresql_repository }}"
+    state: present
+  when: 
+    - ansible_distribution_major_version | int == 7
+
+- name: Install PostgreSQL from OS repository | Install the repository RPM
+  ansible.builtin.yum:
+    name: "{{ postgresql_repository }}"
+    state: present
+  when: 
+    - ansible_distribution_major_version | int >= 8
+
+- name: Install PostgreSQL from OS repository | Disable the built-in PostgreSQL module
+  copy:
+    dest: /etc/dnf/modules.d/postgresql.module
+    content: |
+      [postgresql]
+      name=postgresql
+      stream=
+      profiles=
+      state=disabled
+  when: 
+    - ansible_distribution_major_version | int >= 8
+
+- name: Install PostgreSQL from OS repository | Install PostgreSQL
+  ansible.builtin.yum:
+    name: "postgresql{{ postgresql_version }}-server"
+    state: present
+  notify: start postgresql
+  when: 
+    - ansible_distribution_major_version | int == 7
+
+- name: Install PostgreSQL from OS repository | Install PostgreSQL
+  ansible.builtin.dnf:
+    name: "postgresql{{ postgresql_version }}-server"
+    state: present
+  notify: start postgresql
+  when: 
+    - ansible_distribution_major_version | int >= 8
+
+- name: Install PostgreSQL from OS repository | Check if PostgreSQL database is initialized.
+  stat:
+    path: "{{ postgresql_data_dir }}/PG_VERSION"
+  register: pgdata_dir_version
+
+- name: debug
+  debug:
+    msg: "{{ pgdata_dir_version }}"
+
+- name: Install PostgreSQL from OS repository | Initialize the database
+  command: "{{ postgresql_bin_path }}/postgresql-{{ postgresql_version }}-setup initdb"
+  when: not pgdata_dir_version.stat.exists
+  become: true
+  notify: start postgresql

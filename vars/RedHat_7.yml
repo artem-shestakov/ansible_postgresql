@@ -1,0 +1,5 @@
+---
+__postgresql_repository: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+__postgresql_data_dir: "/var/lib/pgsql/{{ postgresql_version }}/data"
+__postgresql_bin_path: "/usr/pgsql-{{ postgresql_version }}/bin"
+__postgresql_package: "postgresql{{ postgresql_version }}-server"
