@@ -50,7 +50,7 @@ jobs:
         run: pip3 install ansible molecule[docker] pytest pytest-testinfra
 
       - name: Run Molecule tests.
-        run: molecule test
+        run: molecule destroy && molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
